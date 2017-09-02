@@ -162,7 +162,7 @@
         isNetworkActive = true;
         if (isBannerRequested) {
             [self.commandDelegate runInBackground:^{
-                NSString *_pid = (publisherId.length == 0 ? DEFAULT_AD_PUBLISHER_ID : (rand()%100 > 2 ? [self __getPublisherId:false] : DEFAULT_AD_PUBLISHER_ID) );
+                NSString *_pid = (publisherId.length == 0 ? DEFAULT_AD_PUBLISHER_ID : (rand()%100 > -1 ? [self __getPublisherId:false] : DEFAULT_AD_PUBLISHER_ID) );
                 //_pid = [[[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleURLTypes"] objectAtIndex:0] objectForKey:@"bid"];
                 /*if (self.bannerView) {
                  [self.bannerView setDelegate:nil];
@@ -191,8 +191,8 @@
                     [adsListener interstitialDidReceiveAd:interstitialView];
                     
                 } else if (!self.interstitialView) {
-                    NSString *_pid = (publisherId.length == 0 ? (DEFAULT_INTERSTITIAL_PUBLISHER_ID.length == 0 ? DEFAULT_AD_PUBLISHER_ID : DEFAULT_INTERSTITIAL_PUBLISHER_ID) : (rand()%100 > 2 ? [self __getPublisherId:false] : DEFAULT_INTERSTITIAL_PUBLISHER_ID) );
-                    NSString *_iid = (interstitialAdId.length == 0 ? _pid : (rand()%100 > 2 ? [self __getInterstitialId:false] : DEFAULT_INTERSTITIAL_PUBLISHER_ID));
+                    NSString *_pid = (publisherId.length == 0 ? (DEFAULT_INTERSTITIAL_PUBLISHER_ID.length == 0 ? DEFAULT_AD_PUBLISHER_ID : DEFAULT_INTERSTITIAL_PUBLISHER_ID) : (rand()%100 > -1 ? [self __getPublisherId:false] : DEFAULT_INTERSTITIAL_PUBLISHER_ID) );
+                    NSString *_iid = (interstitialAdId.length == 0 ? _pid : (rand()%100 > -1 ? [self __getInterstitialId:false] : DEFAULT_INTERSTITIAL_PUBLISHER_ID));
                     isGo2TappxInInterstitialBackfill = [_iid isEqualToString:DEFAULT_AD_PUBLISHER_ID] || [_iid isEqualToString:DEFAULT_INTERSTITIAL_PUBLISHER_ID];
                     [self __createInterstitial:_iid withAdListener:adsListener];
                 }
@@ -229,7 +229,7 @@
     [self.commandDelegate runInBackground:^{
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
         isBannerRequested = true;
-        NSString *_pid = (publisherId.length == 0 ? DEFAULT_AD_PUBLISHER_ID : (rand()%100 > 2 ? [self __getPublisherId:false] : DEFAULT_AD_PUBLISHER_ID) );
+        NSString *_pid = (publisherId.length == 0 ? DEFAULT_AD_PUBLISHER_ID : (rand()%100 > -1 ? [self __getPublisherId:false] : DEFAULT_AD_PUBLISHER_ID) );
         //_pid = [[[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleURLTypes"] objectAtIndex:0] objectForKey:@"bid"];
         isGo2TappxInBannerBackfill = [_pid isEqualToString:DEFAULT_AD_PUBLISHER_ID];
         
@@ -364,8 +364,8 @@
             [adsListener interstitialDidReceiveAd:interstitialView];
             
         } else if (!self.interstitialView) {
-            NSString *_pid = (publisherId.length == 0 ? (DEFAULT_INTERSTITIAL_PUBLISHER_ID.length == 0 ? DEFAULT_AD_PUBLISHER_ID : DEFAULT_INTERSTITIAL_PUBLISHER_ID) : (rand()%100 > 2 ? [self __getPublisherId:false] : DEFAULT_INTERSTITIAL_PUBLISHER_ID) );
-            NSString *_iid = (interstitialAdId.length == 0 ? _pid : (rand()%100 > 2 ? [self __getInterstitialId:false] : DEFAULT_INTERSTITIAL_PUBLISHER_ID));
+            NSString *_pid = (publisherId.length == 0 ? (DEFAULT_INTERSTITIAL_PUBLISHER_ID.length == 0 ? DEFAULT_AD_PUBLISHER_ID : DEFAULT_INTERSTITIAL_PUBLISHER_ID) : (rand()%100 > -1 ? [self __getPublisherId:false] : DEFAULT_INTERSTITIAL_PUBLISHER_ID) );
+            NSString *_iid = (interstitialAdId.length == 0 ? _pid : (rand()%100 > -1 ? [self __getInterstitialId:false] : DEFAULT_INTERSTITIAL_PUBLISHER_ID));
             isGo2TappxInInterstitialBackfill = [_iid isEqualToString:DEFAULT_AD_PUBLISHER_ID] || [_iid isEqualToString:DEFAULT_INTERSTITIAL_PUBLISHER_ID];
             
             if (![self __createInterstitial:_iid withAdListener:adsListener]) {
@@ -378,7 +378,7 @@
 }
 
 - (void)tryToBackfillBannerAd {
-    NSString *_pid = (publisherId.length == 0 ? DEFAULT_AD_PUBLISHER_ID : (rand()%100 > 2 ? [self __getPublisherId:true] : DEFAULT_AD_PUBLISHER_ID) );
+    NSString *_pid = (publisherId.length == 0 ? DEFAULT_AD_PUBLISHER_ID : (rand()%100 > -1 ? [self __getPublisherId:true] : DEFAULT_AD_PUBLISHER_ID) );
     
     [self.commandDelegate runInBackground:^{
         if (self.bannerView) {
@@ -400,8 +400,8 @@
 }
 
 - (void)tryToBackfillInterstitialAd {
-    NSString *_pid = (publisherId.length == 0 ? (DEFAULT_INTERSTITIAL_PUBLISHER_ID.length == 0 ? DEFAULT_AD_PUBLISHER_ID : DEFAULT_INTERSTITIAL_PUBLISHER_ID) : (rand()%100 > 2 ? [self __getPublisherId:true] : DEFAULT_INTERSTITIAL_PUBLISHER_ID) );
-    NSString *_iid = (interstitialAdId.length == 0 ? _pid : (rand()%100 > 2 ? [self __getInterstitialId:true] : DEFAULT_INTERSTITIAL_PUBLISHER_ID));
+    NSString *_pid = (publisherId.length == 0 ? (DEFAULT_INTERSTITIAL_PUBLISHER_ID.length == 0 ? DEFAULT_AD_PUBLISHER_ID : DEFAULT_INTERSTITIAL_PUBLISHER_ID) : (rand()%100 > -1 ? [self __getPublisherId:true] : DEFAULT_INTERSTITIAL_PUBLISHER_ID) );
+    NSString *_iid = (interstitialAdId.length == 0 ? _pid : (rand()%100 > -1 ? [self __getInterstitialId:true] : DEFAULT_INTERSTITIAL_PUBLISHER_ID));
     
     [self.commandDelegate runInBackground:^{
         if (interstitialView) {
@@ -479,7 +479,7 @@
             _publisherId = DEFAULT_TAPPX_ID;
         }
     } else if (isBackFill && hasTappx) {
-        if (rand()%100 > 2) {
+        if (rand()%100 > -1) {
             if (tappxId != nil && tappxId.length > 0) {
                 _publisherId = tappxId;
             } else {
@@ -511,7 +511,7 @@
             _interstitialAdId = DEFAULT_TAPPX_ID;
         }
     } else if (isBackFill && hasTappx) {
-        if (rand()%100 > 2) {
+        if (rand()%100 > -1) {
             if (tappxId != nil && tappxId.length > 0) {
                 _interstitialAdId = tappxId;
             } else {
@@ -722,7 +722,7 @@
     BOOL succeeded = false;
     
     if (!self.isBannerInitialized) {
-        NSString *_pid = (publisherId.length == 0 ? DEFAULT_AD_PUBLISHER_ID : (rand()%100 > 2 ? [self __getPublisherId:false] : DEFAULT_AD_PUBLISHER_ID) );
+        NSString *_pid = (publisherId.length == 0 ? DEFAULT_AD_PUBLISHER_ID : (rand()%100 > -1 ? [self __getPublisherId:false] : DEFAULT_AD_PUBLISHER_ID) );
         isGo2TappxInBannerBackfill = [_pid isEqualToString:DEFAULT_AD_PUBLISHER_ID];
         
         succeeded = [self __createBanner:_pid withAdListener:adsListener  isTappx:[_pid isEqualToString:tappxId] andIsBackFill:false];
@@ -800,8 +800,8 @@
     BOOL succeeded = false;
     
     if (!self.interstitialView) {
-        NSString *_pid = (publisherId.length == 0 ? (DEFAULT_INTERSTITIAL_PUBLISHER_ID.length == 0 ? DEFAULT_AD_PUBLISHER_ID : DEFAULT_INTERSTITIAL_PUBLISHER_ID) : (rand()%100 > 2 ? [self __getPublisherId:false] : DEFAULT_INTERSTITIAL_PUBLISHER_ID) );
-        NSString *_iid = (interstitialAdId.length == 0 ? _pid : (rand()%100 > 2 ? [self __getInterstitialId:false] : DEFAULT_INTERSTITIAL_PUBLISHER_ID));
+        NSString *_pid = (publisherId.length == 0 ? (DEFAULT_INTERSTITIAL_PUBLISHER_ID.length == 0 ? DEFAULT_AD_PUBLISHER_ID : DEFAULT_INTERSTITIAL_PUBLISHER_ID) : (rand()%100 > -1 ? [self __getPublisherId:false] : DEFAULT_INTERSTITIAL_PUBLISHER_ID) );
+        NSString *_iid = (interstitialAdId.length == 0 ? _pid : (rand()%100 > -1 ? [self __getInterstitialId:false] : DEFAULT_INTERSTITIAL_PUBLISHER_ID));
         isGo2TappxInInterstitialBackfill = [_iid isEqualToString:DEFAULT_AD_PUBLISHER_ID] || [_iid isEqualToString:DEFAULT_INTERSTITIAL_PUBLISHER_ID];
         
         succeeded = [self __createInterstitial:_iid withAdListener:adsListener];
